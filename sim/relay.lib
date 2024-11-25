@@ -1,0 +1,14 @@
+.subckt relay N P C1 C2 S1_1 S1_2 S2_1 S2_2
+S1 S1_1 C1 S_On1 0 SwON
+S2 S1_2 C1 S_On2 0 SwON
+S3 S2_1 C2 S_On1 0 SwON
+S4 S2_2 C2 S_On2 0 SwON
+L1 P N {Ls} Rser={Rs}
+B1 N001 0 V=if(abs(I(L1))>curr,1,0)
+A1 N001 0 0 0 0 0 N002 0 BUF Td=delay
+A2 0 N002 0 N001 0 S_On2 0 0 AND
+A3 0 N002 0 N001 0 0 S_On1 0 OR
+.param Rs=167 Ls=150m Curr=29.9m delay=6m
+.param Ron=1m Roff=1T Vh=-0.4
+.model SwON SW(Ron={Roff} Roff={Ron} Vt=0.5 Vh={Vh})
+.ends relay
